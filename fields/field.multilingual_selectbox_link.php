@@ -26,7 +26,7 @@
 		public function fetchIDfromValue($value) {
 			$id = null;
 			$related_field_ids = $this->get('related_field_id');
-			
+
 			$lc = FLang::getLangCode();
 
 			if (empty($lc)) {
@@ -101,4 +101,57 @@
 			return $searchvalue['entry_id'];
 		}
 		
+		private static function startsWith($haystack, $needle) {
+			// search backwards starting from haystack length characters from the end
+			return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+		}
+		
+		protected function findRelatedValues(array $relation_id = array()) {
+			$relation_data = parent::findRelatedValues($relation_id);
+			if (is_array($relation_data)) {
+				foreach ($relation_data as $r => $relation) {
+					$e = EntryManager::fetch($relation['id']);
+					$ed = $e[0]->getData();
+					foreach ($this->get('related_field_id') as $fieldId) {
+						if (is_array($ed[$fieldId])) {
+							foreach ($ed[$fieldId] as $key => $value) {
+								if (self::startsWith($key, 'value-')) {
+									$relation_data[$r][$key] = $value;
+								}
+							}
+						}
+					}
+				}
+			}
+			return $relation_data;
+		}
+		
+		public function prepareTextValue($data, $entry_id = null) {
+			if(!is_array($data) || (is_array($data) && !isset($data['relation_id']))) {
+				return parent::prepareTextValue($data, $entry_id);
+			}
+
+			if(!is_array($data['relation_id'])){
+				$data['relation_id'] = array($data['relation_id']);
+			}
+
+			$result = $this->findRelatedValues($data['relation_id']);
+			$lc = FLang::getLangCode();
+
+			if (empty($lc)) {
+				$lc = FLang::getMainLang();
+			}
+			
+			$label = '';
+			foreach($result as $item){
+				if (isset($item['value-' . $lc])) {
+					$label .= $item['value-' . $lc];
+				} else {
+					$label .= $item['value'];
+				}
+				$label .= ', ';
+			}
+			
+			return trim($label, ', ');
+		}
 	}
