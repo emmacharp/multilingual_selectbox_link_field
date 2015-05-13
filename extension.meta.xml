@@ -2,11 +2,11 @@
 <extension id="multilingual_selectbox_link_field" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Field: Multilingual Selectbox Link</name>
 	<description>
-		A new way to create master-details pattern with Symphony's sections.
+		A multilingual friendly version of the selectbox_link_field extension.
 	</description>
-	<repo type="github">https://github.com/DeuxHuitHuit/</repo>
+	<repo type="github">https://github.com/DeuxHuitHuit/multilingual_selectbox_link_field</repo>
 	<url type="discuss">http://www.getsymphony.com/discuss/thread/</url>
-	<url type="issues">https://github.com/DeuxHuitHuit//issues</url>
+	<url type="issues">https://github.com/DeuxHuitHuit/multilingual_selectbox_link_field/issues</url>
 	<types>
 		<type>Multilingual</type>
 		<type>Selectbox</type>
@@ -24,7 +24,7 @@
 		<dependency version="2.5">frontend_localisation</dependency>
 	</dependencies>
 	<releases>
-		<release version="1.0.0" date="TBA" min="2.5.0" max="2.6.x">
+		<release version="1.0.0" date="2015-05-13" min="2.5.0" max="2.6.x">
 			- First release
 		</release>
 	</releases>

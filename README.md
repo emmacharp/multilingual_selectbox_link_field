@@ -2,7 +2,7 @@
 
 Version: 1.0.x
 
-> 
+> A multilingual friendly version of the selectbox_link_field extension.
 
 ### REQUIREMENTS ###
 
@@ -22,6 +22,7 @@ For more information, see <http://getsymphony.com/learn/tasks/view/install-an-ex
 ### HOW TO USE ###
 
 - See the [original Select Box Link Field](https://github.com/symphonycms/selectbox_link_field)'s [README](https://github.com/symphonycms/selectbox_link_field/blob/master/README.md)
+- The extension should be able to filter according to the current frontend localisation value.
 
 ### LICENSE ###
 
