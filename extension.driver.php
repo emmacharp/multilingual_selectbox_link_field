@@ -47,7 +47,7 @@
 			}
 			
 			// create table "alias"
-			Symphony::instance()->Database()->query("CREATE VIEW `tbl_fields_multilingual_selectbox_link` AS
+			Administration::instance()->Database()->query("CREATE VIEW `tbl_fields_multilingual_selectbox_link` AS
 				SELECT * FROM `tbl_fields_selectbox_link`;");
 			
 			return true;
@@ -64,7 +64,7 @@
 		}
 
 		public function uninstall() {
-			Symphony::instance()->Database()->query("DROP VIEW `tbl_fields_multilingual_selectbox_link`");
+			Administration::instance()->Database()->query("DROP VIEW `tbl_fields_multilingual_selectbox_link`");
 			return true;
 		}
 
