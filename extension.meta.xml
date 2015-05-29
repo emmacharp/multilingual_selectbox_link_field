@@ -24,6 +24,9 @@
 		<dependency version="2.5">frontend_localisation</dependency>
 	</dependencies>
 	<releases>
+		<release version="1.0.1" date="2015-05-29" min="2.5.0" max="2.6.x">
+			- Fix install problems and dependency checks
+		</release>
 		<release version="1.0.0" date="2015-05-13" min="2.5.0" max="2.6.x">
 			- First release
 		</release>
