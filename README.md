@@ -1,6 +1,6 @@
 # Multilingual Select Box Link Field
 
-Version: 1.0.x
+Version: 1.1.x
 
 > A multilingual friendly version of the selectbox_link_field extension.
 
