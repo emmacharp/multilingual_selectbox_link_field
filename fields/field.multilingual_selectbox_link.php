@@ -23,6 +23,25 @@
 			$this->_name = __('Multilingual Select Box Link');
 		}
 		
+		protected function getFieldSchema($fieldId) {
+			$lc = FLang::getLangCode();
+
+			if (empty($lc)) {
+				$lc = FLang::getMainLang();
+			}
+			
+			try {
+				return Symphony::Database()->fetch("
+					SHOW COLUMNS FROM `tbl_entries_data_$fieldId`
+						WHERE `Field` in ('value-$lc');
+				");
+			}
+			catch (Exception $ex) {
+				// bail out
+			}
+			return parent::getFieldSchema($fieldId);
+		}
+		
 		public function fetchIDfromValue($value) {
 			$id = null;
 			$related_field_ids = $this->get('related_field_id');
