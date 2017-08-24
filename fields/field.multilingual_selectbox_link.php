@@ -9,7 +9,7 @@
 	require_once(TOOLKIT . '/class.field.php');
 	require_once(EXTENSIONS . '/selectbox_link_field/fields/field.selectbox_link.php');
 	require_once(EXTENSIONS . '/frontend_localisation/lib/class.FLang.php');
-	
+
 	/**
 	 *
 	 * Field class that will represent relationships between entries
@@ -22,14 +22,14 @@
 			parent::__construct();
 			$this->_name = __('Multilingual Select Box Link');
 		}
-		
+
 		protected function getFieldSchema($fieldId) {
 			$lc = FLang::getLangCode();
 
 			if (empty($lc)) {
 				$lc = FLang::getMainLang();
 			}
-			
+
 			try {
 				return Symphony::Database()->fetch("
 					SHOW COLUMNS FROM `tbl_entries_data_$fieldId`
@@ -41,7 +41,7 @@
 			}
 			return parent::getFieldSchema($fieldId);
 		}
-		
+
 		public function fetchIDfromValue($value) {
 			$id = null;
 			$related_field_ids = $this->get('related_field_id');
@@ -51,11 +51,11 @@
 			if (empty($lc)) {
 				$lc = FLang::getMainLang();
 			}
-			
+
 			$value = Lang::createHandle($value);
-			
+
 			$try_parent = false;
-			
+
 			foreach($related_field_ids as $related_field_id) {
 				try {
 					$return = Symphony::Database()->fetchCol("id", sprintf("
@@ -80,24 +80,24 @@
 					$try_parent = true;
 				}
 			}
-			
+
 			if ($try_parent) {
 				return parent::fetchIDfromValue($value);
 			}
 
 			return (is_null($id)) ? 0 : (int)$id;
 		}
-		
-		public function fetchAssociatedEntrySearchValue($data, $field_id=NULL, $parent_entry_id=NULL){
+
+		public function fetchAssociatedEntrySearchValue($data, $field_id = null, $parent_entry_id = null){
 			// We dont care about $data, but instead $parent_entry_id
 			if(!is_null($parent_entry_id)) return $parent_entry_id;
 
 			if(!is_array($data)) return $data;
-			
+
 			$handle = addslashes($data['handle']);
-			
+
 			$try_parent = false;
-			
+
 			$searchvalue = array();
 
 			try {
@@ -112,19 +112,19 @@
 				// column doesn't exist!
 				$try_parent = true;
 			}
-			
+
 			if ($try_parent) {
 				return parent::fetchAssociatedEntrySearchValue($data, $field_id, $parent_entry_id);
 			}
 
 			return $searchvalue['entry_id'];
 		}
-		
+
 		private static function startsWith($haystack, $needle) {
 			// search backwards starting from haystack length characters from the end
-			return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+			return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
 		}
-		
+
 		protected function findRelatedValues(array $relation_id = array()) {
 			$relation_data = parent::findRelatedValues($relation_id);
 			if (is_array($relation_data)) {
@@ -144,7 +144,7 @@
 			}
 			return $relation_data;
 		}
-		
+
 		public function prepareTextValue($data, $entry_id = null) {
 			if(!is_array($data) || (is_array($data) && !isset($data['relation_id']))) {
 				return parent::prepareTextValue($data, $entry_id);
@@ -160,7 +160,7 @@
 			if (empty($lc)) {
 				$lc = FLang::getMainLang();
 			}
-			
+
 			$label = '';
 			foreach($result as $item){
 				if (isset($item['value-' . $lc])) {
@@ -170,7 +170,7 @@
 				}
 				$label .= ', ';
 			}
-			
+
 			return trim($label, ', ');
 		}
 	}
