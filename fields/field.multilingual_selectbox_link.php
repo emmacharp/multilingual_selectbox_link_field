@@ -129,7 +129,7 @@
 			$relation_data = parent::findRelatedValues($relation_id);
 			if (is_array($relation_data)) {
 				foreach ($relation_data as $r => $relation) {
-					$e = EntryManager::fetch($relation['id']);
+					$e = (new EntryManager) ->select()->entry($relation['id'])->execute()->next();
 					$ed = $e[0]->getData();
 					foreach ($this->get('related_field_id') as $fieldId) {
 						if (is_array($ed[$fieldId])) {
