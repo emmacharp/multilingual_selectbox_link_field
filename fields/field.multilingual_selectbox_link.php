@@ -31,10 +31,12 @@
 			}
 
 			try {
-				return Symphony::Database()->fetch("
-					SHOW COLUMNS FROM `tbl_entries_data_$fieldId`
-						WHERE `Field` in ('value-$lc');
-				");
+				return Symphony::Database()
+					->showColumns()
+					->from('tbl_entries_data_' . $fieldId)
+					->where(['Field' => ['in' => ['value-' . $lc]]])
+					->execute()
+					->rows();
 			}
 			catch (Exception $ex) {
 				// bail out
@@ -58,15 +60,16 @@
 
 			foreach($related_field_ids as $related_field_id) {
 				try {
-					$return = Symphony::Database()->fetchCol("id", sprintf("
-						SELECT
-							`entry_id` as `id`
-						FROM
-							`tbl_entries_data_%d`
-						WHERE
-							`handle` = '%s' OR `handle-{$lc}` = '%s'
-						LIMIT 1", $related_field_id, $value, $value
-					));
+					$return = Symphony::Database()
+						->select(['entry_id' => 'id'])
+						->from('tbl_entries_data_' . $related_field_id)
+						->where(['or' => [
+							['handle' => $value],
+							['handle-' . $lc => $value],
+						]])
+						->limit(1)
+						->execute()
+						->column('id');
 
 					// Skipping returns wrong results when doing an
 					// AND operation, return 0 instead.
@@ -101,12 +104,16 @@
 			$searchvalue = array();
 
 			try {
-				$searchvalue = Symphony::Database()->fetchRow(0, sprintf("
-					SELECT `entry_id` FROM `tbl_entries_data_%d`
-					WHERE `handle` = '%s' OR `handle-{$lc}` = '%s'
-					LIMIT 1",
-					$field_id, $handle, $handle
-				));
+				$searchvalue = Symphony::Database()
+					->select(['entry_id'])
+					->from('tbl_entries_data_' . $field_id)
+					->where(['or' => [
+						['handle' => $handle],
+						['handle-' . $lc => $handle],
+					]])
+					->limit(1)
+					->execute()
+					->next();
 			} catch (Exception $ex) {
 				// Try the parent since this would normally be the case when a handle
 				// column doesn't exist!
