@@ -129,8 +129,15 @@
 			$relation_data = parent::findRelatedValues($relation_id);
 			if (is_array($relation_data)) {
 				foreach ($relation_data as $r => $relation) {
-					$e = (new EntryManager) ->select()->entry($relation['id'])->execute()->next();
-					$ed = $e[0]->getData();
+					$section_id = SectionManager::fetchIDFromHandle($relation['section_handle']);
+					$e = (new EntryManager)
+						->select()
+						->entry($relation['id'])
+						->section($section_id)
+						->includeAllFields()
+						->execute()
+						->next();
+					$ed = $e->getData();
 					foreach ($this->get('related_field_id') as $fieldId) {
 						if (is_array($ed[$fieldId])) {
 							foreach ($ed[$fieldId] as $key => $value) {
