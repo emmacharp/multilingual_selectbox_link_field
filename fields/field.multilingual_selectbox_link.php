@@ -97,11 +97,11 @@
 
 			if(!is_array($data)) return $data;
 
-			$handle = addslashes($data['handle']);
+			$handle = $data['handle'];
 
 			$try_parent = false;
 
-			$searchvalue = array();
+			$searchvalue = null;
 
 			try {
 				$searchvalue = Symphony::Database()
@@ -113,7 +113,7 @@
 					]])
 					->limit(1)
 					->execute()
-					->next();
+					->variable('entry_id');
 			} catch (Exception $ex) {
 				// Try the parent since this would normally be the case when a handle
 				// column doesn't exist!
@@ -124,7 +124,7 @@
 				return parent::fetchAssociatedEntrySearchValue($data, $field_id, $parent_entry_id);
 			}
 
-			return $searchvalue['entry_id'];
+			return $searchvalue;
 		}
 
 		private static function startsWith($haystack, $needle) {
