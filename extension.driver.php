@@ -31,7 +31,7 @@
 		 * Creates the table needed for the settings of the field
 		 */
 		public function install() {
-			if (__SBLF_NOT_INSTALLED) {
+			if ('__SBLF_NOT_INSTALLED') {
 				$sbl_status = ExtensionManager::fetchStatus(array('handle' => 'selectbox_link_field'));
 				$sbl_status = current($sbl_status);
 				if ($sbl_status != Extension::EXTENSION_ENABLED) {
